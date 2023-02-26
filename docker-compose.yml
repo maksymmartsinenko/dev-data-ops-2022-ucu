@@ -1,0 +1,27 @@
+version: "3.9"
+networks:
+  my-network:
+    driver: bridge
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfilemultistage
+    ports:
+      - "8080:80" # map the container port 80 to the host port 8080
+    depends_on:
+      - mongo
+    environment:
+      MONGO_URI: "mongodb://mongo:27017/"
+    networks:
+      - my-network
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - my-network
+volumes:
+  mongodb_data:

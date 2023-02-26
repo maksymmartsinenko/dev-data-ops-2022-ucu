@@ -1,0 +1,17 @@
+# exclude development files and directories
+.git
+.vscode
+*.pyc
+
+# exclude Node.js dependencies
+node_modules
+
+# exclude Python dependencies
+__pycache__
+*.egg-info
+*.egg
+
+# exclude miscellaneous files
+.DS_Store
+*.log
+*.swp
