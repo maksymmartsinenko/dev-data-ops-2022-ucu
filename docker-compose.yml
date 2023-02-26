@@ -6,13 +6,13 @@ services:
   web:
     build:
       context: .
-      dockerfile: Dockerfilemultistage
+      dockerfile: Dockerfile #Dockerfilemultistage
     ports:
       - "8080:80" # map the container port 80 to the host port 8080
     depends_on:
       - mongo
     environment:
-      MONGO_URI: "mongodb://mongo:27017/"
+      MONGO_URI: "mongodb://mongo-1:27017/" 
     networks:
       - my-network
   mongo:
