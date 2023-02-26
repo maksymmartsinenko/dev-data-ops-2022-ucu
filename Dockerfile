@@ -1,20 +1,25 @@
 # Use an official Python runtime as a parent image
-FROM python:3.8-slim-buster
+FROM python:3.9-slim
 
-# Set the working directory to /app
+# Create a non-root user and group to run the application
+RUN groupadd -r appuser && useradd -r -g appuser appuser
+
+# Set the working directory for the application
 WORKDIR /app
 
-# Copy the current directory contents into the container at /app
-COPY . /app
+# Copy the requirements file and install the dependencies
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Install any needed packages specified in requirements.txt
-RUN pip install --trusted-host pypi.python.org -r requirements.txt
+# Copy the rest of the application code
+COPY . .
 
-# Make port 80 available to the world outside this container
-EXPOSE 80
+# Set the user to the non-root user created earlier
+USER appuser
 
-# Define environment variable
-ENV NAME World
+# Set the environment variable for the MongoDB URI
+ENV MONGO_URI mongodb://mongo:27017/
 
-# Run app.py when the container launches
-CMD ["python", "main.py"]
+# Set the command to run when the container starts
+CMD ["python", "main.py", "--host=0.0.0.0", "--port=80"]
+
